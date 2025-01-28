@@ -18,12 +18,3 @@ test_that("pxw_get_data fetches and processes data correctly", {
   expect_true(any(grepl("_name$", names(attributes(full_named_data)$codes_names))))
 })
 
-test_that("pxw_get_data handles empty renames correctly", {
-  url <- "https://statfin.stat.fi/PXWeb/api/v1/fi/StatFin/vkour/statfin_vkour_pxt_12bq.px"
-  query <- list("Vuosi" = c("1970", "1975"), "Tiedot" = c("vaesto"))
-
-  # Test with empty renames
-  data <- pxw_get_data(url, query, renames = NULL)
-  expect_s3_class(data, "data.frame")
-  expect_true("values" %in% names(data))
-})

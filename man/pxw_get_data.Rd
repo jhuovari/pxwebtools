@@ -12,8 +12,6 @@ pxw_get_data(url, query, names = "all")
 \item{query}{A JSON string, JSON file, or list object that can be coerced to a \code{pxweb_query} object.}
 
 \item{names}{Whether to add columns for names. "all", "none", or a vector of variable names.}
-
-\item{renames}{Optional renaming of variables.}
 }
 \description{
 Downloads data from a PxWeb API, processes it into a tidy format,

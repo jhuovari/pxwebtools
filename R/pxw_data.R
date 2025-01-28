@@ -5,7 +5,7 @@
 #'
 #' This function fetches data from a PxWeb API, processes it into a long-format
 #' `data.frame`, rename time columns to `time` as Date-format with
-#' \link[statfitools]{clean_time2} and rename all
+#' \link[statfitools]{clean_times2} and rename all
 #' columns with \link[statfitools]{clean_names},
 #' and applies optional transformation adding name columns for codes. The resulting data frame also includes
 #' additional attributes such as `codes_names` for mapping codes to names.
@@ -14,7 +14,6 @@
 #' @param url A PxWeb object or URL that can be coerced to a PxWeb object.
 #' @param query A JSON string, JSON file, or list object that can be coerced to a `pxweb_query` object.
 #' @param names Whether to add columns for names. "all", "none", or a vector of variable names.
-#' @param renames Optional renaming of variables.
 #'
 #' @import pxweb
 #' @import dplyr
@@ -51,7 +50,6 @@ pxw_get_data <- function(url, query, names = "all") {
   # Process the PxWeb data into a tidy data frame
   px_df <- as.data.frame(px_data, column.name.type = "code",
                          variable.value.type = "code") %>%
-    dplyr::rename(!!!renames) %>%  # Rename variables if applicable
     tidyr::pivot_longer(where(is.numeric),
                         names_to = setdiff(names(codes_names), names(.)),
                         values_to = "values") %>%
@@ -77,4 +75,4 @@ pxw_get_data <- function(url, query, names = "all") {
   px_df
 }
 
-
+utils::globalVariables(c("time", "values"))

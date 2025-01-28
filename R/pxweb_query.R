@@ -38,7 +38,7 @@ pxw_print_code_full_query <- function(url, time_all = TRUE, target = "") {
   full_query <- pxw_prepare_full_query(url = url, time_all = time_all)
 
   suppress_output <-
-    capture.output({
+    utils::capture.output({
       query_text <- pxweb:::pxweb_query_as_rcode(full_query)
     })
 
@@ -88,7 +88,7 @@ pxw_prepare_full_query <- function(url, time_all = TRUE) {
 
   # Adjust time variable if needed
   if (time_all) {
-    time_position <- na.omit(match(c("vuosi", "vuosineljannes", "kuukausi"),
+    time_position <- stats::na.omit(match(c("vuosi", "vuosineljannes", "kuukausi"),
                                    tolower(purrr::map_chr(full_query$query, ~ .x$code))))
     if (length(time_position) > 0) {
       full_query$query[[time_position]]$selection$values <- "*"
@@ -114,3 +114,6 @@ pxw_full_query_as_list <- function(url, time_all = TRUE) {
   full_query_r_expr <- pxweb:::pxweb_query_as_rcode(pxw_prepare_full_query(url, time_all = time_all))
   eval(parse(text = paste0(full_query_r_expr[-1], collapse = "\n")))
 }
+
+
+utils::globalVariables(c("time", "values"))

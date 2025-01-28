@@ -14,13 +14,17 @@ LazyData: true
 RoxygenNote: 7.3.2
 Imports: 
     pxweb,
-    stringr,
     dplyr,
-    purrr
+    purrr,
+    forcats,
+    tidyr,
+    statfitools
 Suggests: 
     testthat (>= 3.0.0),
     knitr,
     rmarkdown
+Remotes:
+    github::pttry/statfitools
 Roxygen: list(markdown = TRUE)
 URL: https://github.com/jhuovari/pxwebtools
 BugReports: https://github.com/jhuovari/pxwebtools/issues
