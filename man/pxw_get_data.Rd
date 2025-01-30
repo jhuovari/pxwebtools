@@ -10,7 +10,7 @@ pxw_get_data(
   to_name = FALSE,
   name_suffix = "_name",
   code_suffix = "",
-  time_format = NULL
+  date_format = NULL
 )
 }
 \arguments{
@@ -24,7 +24,7 @@ pxw_get_data(
 
 \item{code_suffix}{Suffix to add to code columns. Default is \code{""}.}
 
-\item{time_format}{A time format for \link{parse_time}.
+\item{date_format}{A time format for \link{parse_dates}.
 See also \link[lubridate]{parse_date_time}.}
 }
 \description{

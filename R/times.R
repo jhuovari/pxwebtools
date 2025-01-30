@@ -1,11 +1,11 @@
 #' Parse Time Variables into a Unified Date Column
 #'
 #' This function processes and converts multiple time-related columns (e.g., year, month, day)
-#' into a single `Date` column. If no `time_format` is specified, it defaults to
+#' into a single `Date` column. If no `date_format` is specified, it defaults to
 #' `statfitools::clean_times2()` which automatically parses statfin dates.
 #'
 #' @param df A data frame containing time-related columns.
-#' @param time_format A named vector specifying the format of time-related columns.
+#' @param date_format A named vector specifying the format of time-related columns.
 #'   Names should match column names in `df`, and values should indicate their format:
 #'   - `"y"` for year
 #'   - `"m"` for month
@@ -25,32 +25,32 @@
 #'   values = c(100, 200, 300)
 #' )
 #'
-#' time_format <- c(Vuosi = "y", kuukausi = "m")
+#' date_format <- c(Vuosi = "y", kuukausi = "m")
 #'
-#' parse_times(df, time_format)
+#' parse_dates(df, date_format)
 #'
 #' # Using the default cleaning function for statfi-style date
 #' df2 <- data.frame(
 #'   Kuukausi = c("2020M01", "2020M02", "2020M03"),
 #'   values = c(100, 200, 300)
 #' )
-#' parse_times(df2, NULL)
-parse_times <- function(df, time_format = NULL) {
+#' parse_dates(df2, NULL)
+parse_dates <- function(df, date_format = NULL) {
 
-  if (is.null(time_format)) return(statfitools::clean_times2(df))
+  if (is.null(date_format)) return(statfitools::clean_times2(df))
 
-  # Ensure time_format is named correctly
-  if (!all(names(time_format) %in% names(df))) {
-    stop("Some time_format names are not present in the data frame.")
+  # Ensure date_format is named correctly
+  if (!all(names(date_format) %in% names(df))) {
+    stop("Some date_format names are not present in the data frame.")
   }
 
   # Create time string based on formats
   time_str <- df %>%
-    dplyr::mutate(dplyr::across(dplyr::all_of(names(time_format)), as.character)) %>%
-    tidyr::unite("time_combined", tidyr::all_of(names(time_format)), sep = "-", remove = TRUE, na.rm = TRUE)
+    dplyr::mutate(dplyr::across(dplyr::all_of(names(date_format)), as.character)) %>%
+    tidyr::unite("time_combined", tidyr::all_of(names(date_format)), sep = "-", remove = TRUE, na.rm = TRUE)
 
   # Determine format string for parsing
-  format_str <- paste0(time_format, collapse = "-")
+  format_str <- paste0(date_format, collapse = "-")
 
   # Parse the combined time column to Date format
   df <- time_str %>%

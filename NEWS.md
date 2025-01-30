@@ -1,6 +1,6 @@
 # pxwebtools 0.1.3
 
-* Improvement of`pxw_get_data` including `time_format` argument 
+* Improvement of`pxw_get_data` including `date_format` argument 
 
 
 # pxwebtools 0.1.0
