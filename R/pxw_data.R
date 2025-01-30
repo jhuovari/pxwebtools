@@ -16,6 +16,8 @@
 #' @param to_name Whether to add columns for names. TRUE, FALSE (default), or a vector of variable names.
 #' @param name_suffix Suffix to add to name columns. Default is `"_name"`.
 #' @param code_suffix Suffix to add to code columns. Default is `""`.
+#' @param time_format A time format for \link{parse_times}.
+#'        See also \link[lubridate]{parse_date_time}.
 #'
 #' @import pxweb
 #' @import dplyr
@@ -32,8 +34,9 @@
 #'
 #' data <- pxw_get_data(url, query)
 #' data_named <- pxw_get_data(url, query, to_name = TRUE)
-pxw_get_data <- function(url, query, to_name = FALSE, name_suffix = "_name",
-                         code_suffix = "") {
+pxw_get_data <- function(url, query, to_name = FALSE,
+                         name_suffix = "_name", code_suffix = "",
+                         time_format = NULL) {
 
   # Fetch data from PxWeb API
   px_data <- pxweb::pxweb_get(url = url, query = query)
@@ -57,7 +60,7 @@ pxw_get_data <- function(url, query, to_name = FALSE, name_suffix = "_name",
     tidyr::pivot_longer(where(is.numeric),
                         names_to = setdiff(names(codes_names), names(.)),
                         values_to = "values") %>%
-    statfitools::clean_times2() %>%
+    parse_times(time_format = time_format) %>%
     statfitools::codes2names(codes_names, to_name = to_name,
                              name_suffix = name_suffix,
                              code_suffix = code_suffix) %>%

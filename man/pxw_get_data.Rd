@@ -9,7 +9,8 @@ pxw_get_data(
   query,
   to_name = FALSE,
   name_suffix = "_name",
-  code_suffix = ""
+  code_suffix = "",
+  time_format = NULL
 )
 }
 \arguments{
@@ -22,6 +23,9 @@ pxw_get_data(
 \item{name_suffix}{Suffix to add to name columns. Default is \code{"_name"}.}
 
 \item{code_suffix}{Suffix to add to code columns. Default is \code{""}.}
+
+\item{time_format}{A time format for \link{parse_time}.
+See also \link[lubridate]{parse_date_time}.}
 }
 \description{
 Downloads data from a PxWeb API, processes it into a tidy format,
