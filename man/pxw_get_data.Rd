@@ -17,11 +17,11 @@ pxw_get_data(
 
 \item{query}{A JSON string, JSON file, or list object that can be coerced to a \code{pxweb_query} object.}
 
+\item{to_name}{Whether to add columns for names. TRUE, FALSE (default), or a vector of variable names.}
+
 \item{name_suffix}{Suffix to add to name columns. Default is \code{"_name"}.}
 
 \item{code_suffix}{Suffix to add to code columns. Default is \code{""}.}
-
-\item{names}{Whether to add columns for names. TRUE, "none", or a vector of variable names.}
 }
 \description{
 Downloads data from a PxWeb API, processes it into a tidy format,
