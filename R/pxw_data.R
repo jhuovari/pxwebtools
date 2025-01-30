@@ -13,7 +13,9 @@
 #'
 #' @param url A PxWeb object or URL that can be coerced to a PxWeb object.
 #' @param query A JSON string, JSON file, or list object that can be coerced to a `pxweb_query` object.
-#' @param names Whether to add columns for names. "all", "none", or a vector of variable names.
+#' @param to_name Whether to add columns for names. TRUE, FALSE (default), or a vector of variable names.
+#' @param name_suffix Suffix to add to name columns. Default is `"_name"`.
+#' @param code_suffix Suffix to add to code columns. Default is `""`.
 #'
 #' @import pxweb
 #' @import dplyr
@@ -28,8 +30,10 @@
 #'               "Koulutusaste" = c("SSS", "3T8"),
 #'               "Tiedot" = c("vaesto"))
 #'
-#' data <- pxw_get_data(url, query, names = "none")
-pxw_get_data <- function(url, query, names = "all") {
+#' data <- pxw_get_data(url, query)
+#' data_named <- pxw_get_data(url, query, to_name = TRUE)
+pxw_get_data <- function(url, query, to_name = FALSE, name_suffix = "_name",
+                         code_suffix = "") {
 
   # Fetch data from PxWeb API
   px_data <- pxweb::pxweb_get(url = url, query = query)
@@ -38,14 +42,14 @@ pxw_get_data <- function(url, query, names = "all") {
   codes_names <- statfitools::px_code_name(px_data)
 
 
-  # Determine which columns to name
-  if (names == "all") {
-    to_name <- names(codes_names)
-  } else if (names == "none") {
-    to_name <- NULL
-  } else {
-    to_name <- names
-  }
+  # # Determine which columns to name
+  # if (names == "all") {
+  #   to_name <- names(codes_names)
+  # } else if (names == "none") {
+  #   to_name <- NULL
+  # } else {
+  #   to_name <- names
+  # }
 
   # Process the PxWeb data into a tidy data frame
   px_df <- as.data.frame(px_data, column.name.type = "code",
@@ -54,9 +58,9 @@ pxw_get_data <- function(url, query, names = "all") {
                         names_to = setdiff(names(codes_names), names(.)),
                         values_to = "values") %>%
     statfitools::clean_times2() %>%
-    statfitools::codes2names(codes_names, to_name,
-                             name_suffix = "_name",
-                             code_suffix = "") %>%
+    statfitools::codes2names(codes_names, to_name = to_name,
+                             name_suffix = name_suffix,
+                             code_suffix = code_suffix) %>%
     dplyr::mutate(across(where(is.character), ~forcats::as_factor(.x))) %>%
     statfitools::clean_names() %>%
     dplyr::relocate(time) %>%
@@ -68,11 +72,19 @@ pxw_get_data <- function(url, query, names = "all") {
   #   attributes(px_df)$citation <- pttdatahaku::ptt_capture_citation(px_data)
   # }
 
+  cleaned_names <- unique(gsub(paste0(name_suffix, "|", code_suffix), "", names(px_df)))
+
   codes_names <- statfitools::clean_names(codes_names)
-  attributes(px_df)$codes_names <- codes_names
+
+  # Only keep names that exist in codes_names
+  valid_names <- intersect(cleaned_names, names(codes_names))
+
+  attributes(px_df)$codes_names <- codes_names[valid_names]
 
   # Return the processed data frame
   px_df
 }
 
-utils::globalVariables(c("time", "values"))
+utils::globalVariables(c("time", "values", "."))
+
+

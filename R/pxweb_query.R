@@ -48,7 +48,7 @@ pxw_print_code_full_query <- function(url, time_all = TRUE, target = "") {
 
 
   # Print R code to download the data
-  cat("dat_", table_code, " <- pxweb::pxweb_get(\n",
+  cat("dat_", table_code, " <- pxw_get_data(\n",
       "  url = \"", url, "\",\n",
       "  query = \n  ",
       paste0(query_text[-1], collapse = "\n"),

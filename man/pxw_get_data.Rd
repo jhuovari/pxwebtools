@@ -4,14 +4,24 @@
 \alias{pxw_get_data}
 \title{Get data from PxWeb API and modify output}
 \usage{
-pxw_get_data(url, query, names = "all")
+pxw_get_data(
+  url,
+  query,
+  to_name = FALSE,
+  name_suffix = "_name",
+  code_suffix = ""
+)
 }
 \arguments{
 \item{url}{A PxWeb object or URL that can be coerced to a PxWeb object.}
 
 \item{query}{A JSON string, JSON file, or list object that can be coerced to a \code{pxweb_query} object.}
 
-\item{names}{Whether to add columns for names. "all", "none", or a vector of variable names.}
+\item{name_suffix}{Suffix to add to name columns. Default is \code{"_name"}.}
+
+\item{code_suffix}{Suffix to add to code columns. Default is \code{""}.}
+
+\item{names}{Whether to add columns for names. TRUE, "none", or a vector of variable names.}
 }
 \description{
 Downloads data from a PxWeb API, processes it into a tidy format,
@@ -20,7 +30,7 @@ and optionally modifies the output with variable renaming and name columns.
 \details{
 This function fetches data from a PxWeb API, processes it into a long-format
 \code{data.frame}, rename time columns to \code{time} as Date-format with
-\link[statfitools]{clean_time2} and rename all
+\link[statfitools]{clean_times2} and rename all
 columns with \link[statfitools]{clean_names},
 and applies optional transformation adding name columns for codes. The resulting data frame also includes
 additional attributes such as \code{codes_names} for mapping codes to names.
@@ -34,5 +44,6 @@ query <- list("Vuosi" = c("1970", "1975"),
               "Koulutusaste" = c("SSS", "3T8"),
               "Tiedot" = c("vaesto"))
 
-data <- pxw_get_data(url, query, names = "none")
+data <- pxw_get_data(url, query)
+data_named <- pxw_get_data(url, query, to_name = TRUE)
 }

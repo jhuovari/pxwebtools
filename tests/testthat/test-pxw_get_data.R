@@ -9,12 +9,12 @@ test_that("pxw_get_data fetches and processes data correctly", {
                 "Tiedot" = c("vaesto"))
 
   # Test basic functionality
-  data <- pxw_get_data(url, query, names = "none")
+  data <- pxw_get_data(url, query)
   expect_s3_class(data, "data.frame")
-  expect_true(all(c("time", "values") %in% names(data)))
+  expect_true(all(c("time", "values", "alue", "ika") %in% names(data)))
 
   # Test with full names added
-  full_named_data <- pxw_get_data(url, query, names = "all")
-  expect_true(any(grepl("_name$", names(attributes(full_named_data)$codes_names))))
+  full_named_data <- pxw_get_data(url, query, to_name = TRUE)
+  expect_true(all(c("time", "values", "alue_name", "ika_name") %in% names(full_named_data)))
 })
 

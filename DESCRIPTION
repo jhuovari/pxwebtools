@@ -1,7 +1,7 @@
 Package: pxwebtools
 Type: Package
 Title: Tools to Simplify PxWeb Queries
-Version: 0.1.2
+Version: 0.1.3
 Authors@R: c(
     person("Janne", "Huovari", email = "janne.huovari@gmail.com", role = c("aut", "cre")),
     person("Juho", "Alasalmi", email = "juho.alasalmi@ptt.fi", role = c("aut"))
