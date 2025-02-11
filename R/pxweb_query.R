@@ -89,7 +89,7 @@ pxw_prepare_full_query <- function(url, time_all = TRUE) {
   # Adjust time variable if needed
   if (time_all) {
     time_position <- stats::na.omit(match(c("vuosi", "vuosineljannes", "kuukausi"),
-                                   tolower(purrr::map_chr(full_query$query, ~ .x$code))))
+                                     statfitools::make_names(purrr::map_chr(full_query$query, ~ .x$code))))
     if (length(time_position) > 0) {
       full_query$query[[time_position]]$selection$values <- "*"
     }
