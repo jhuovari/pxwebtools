@@ -1,3 +1,7 @@
+# pxwebtools 0.1.5
+
+* `pxw_codes_names_table` to Retrieve Variable Codes and Labels from Attributes of Data
+
 # pxwebtools 0.1.3
 
 * Improvement of`pxw_get_data` including `date_format` argument 

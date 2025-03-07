@@ -111,7 +111,14 @@ tibble [96 × 4] (S3: tbl_df/tbl/data.frame)
 
 ```
 
+### Labels of codes in data
 
+```r
+
+code_table  <- pxw_codes_names_table(dat_statfin_tyti_pxt_11pk_px, "tiedot")
+print(code_table)
+
+```
 
 ### Converting PxWeb URLs to API URLs
 
