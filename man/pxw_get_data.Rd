@@ -10,7 +10,8 @@ pxw_get_data(
   to_name = FALSE,
   name_suffix = "_name",
   code_suffix = "",
-  date_format = NULL
+  date_format = NULL,
+  print_update = FALSE
 )
 }
 \arguments{
@@ -26,6 +27,9 @@ pxw_get_data(
 
 \item{date_format}{A time format for \link{parse_dates}.
 See also \link[lubridate]{parse_date_time}.}
+
+\item{print_updated}{Whether to print update time when not in interactive
+session. FALSE (defaut) gives message instead.}
 }
 \description{
 Downloads data from a PxWeb API, processes it into a tidy format,

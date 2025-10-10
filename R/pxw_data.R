@@ -18,6 +18,8 @@
 #' @param code_suffix Suffix to add to code columns. Default is `""`.
 #' @param date_format A time format for \link{parse_dates}.
 #'        See also \link[lubridate]{parse_date_time}.
+#' @param print_updated Whether to print update time when not in interactive
+#'        session. FALSE (defaut) gives message instead.
 #'
 #' @import pxweb
 #' @import dplyr
@@ -36,7 +38,8 @@
 #' data_named <- pxw_get_data(url, query, to_name = TRUE)
 pxw_get_data <- function(url, query, to_name = FALSE,
                          name_suffix = "_name", code_suffix = "",
-                         date_format = NULL) {
+                         date_format = NULL,
+                         print_update = FALSE) {
 
   # Fetch data from PxWeb API
   px_data <- pxweb::pxweb_get(url = url, query = query)
@@ -83,6 +86,18 @@ pxw_get_data <- function(url, query, to_name = FALSE,
   valid_names <- intersect(cleaned_names, names(codes_names))
 
   attributes(px_df)$codes_names <- codes_names[valid_names]
+
+  # Updated info
+
+  update_time <- px_data$metadata[[1]]$updated |>
+    lubridate::ymd_hms()
+  px_name <- basename(px_data$url)
+
+  if (print_update & !interactive()) {
+    cat(px_name, ": ", as.character(update_time), "\n", sep = "")
+  } else {
+    message(px_name, ": ", update_time)
+  }
 
   # Return the processed data frame
   px_df
