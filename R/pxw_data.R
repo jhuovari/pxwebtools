@@ -41,7 +41,12 @@ pxw_get_data <- function(url, query, to_name = FALSE,
                          date_format = NULL,
                          print_update = FALSE) {
 
-  # Fetch data from PxWeb API
+  # Fetch data from PxWeb API. Statistics Finland changed active StatFin
+  # tables in June 2026 so that URLs use the short table ID and query
+  # variables use VARIABLECODE values instead of translated variable names.
+  url <- pxw_normalize_statfin_api_url(url)
+  meta <- pxweb::pxweb_get(url = url)
+  query <- pxw_normalize_query(query = query, meta = meta)
   px_data <- pxweb::pxweb_get(url = url, query = query)
 
   # Extract variable codes and names
@@ -106,3 +111,62 @@ pxw_get_data <- function(url, query, to_name = FALSE,
 utils::globalVariables(c("time", "values", "."))
 
 
+
+# Normalize query variable names and selected values against PxWeb metadata.
+#
+# This keeps older user code working with Statistics Finland's 2026 PxWeb
+# metadata where variable identifiers changed from labels (for example
+# "Tiedot") to VARIABLECODE values (for example "contentscode").
+pxw_normalize_query <- function(query, meta) {
+  if (!is.list(query) || inherits(query, "pxweb_query")) {
+    return(query)
+  }
+
+  variables <- meta$variables
+  variable_codes <- purrr::map_chr(variables, "code")
+  variable_texts <- purrr::map_chr(variables, "text")
+
+  normalized <- purrr::imap(query, function(values, variable_name) {
+    variable_index <- match(variable_name, variable_codes)
+    if (is.na(variable_index)) {
+      variable_index <- match(variable_name, variable_texts)
+    }
+
+    if (is.na(variable_index)) {
+      return(values)
+    }
+
+    variable_values <- variables[[variable_index]]$values
+    if (is.null(variable_values) || identical(values, "*") || identical(values, c("*"))) {
+      return(values)
+    }
+
+    purrr::map_chr(values, function(value) {
+      if (value %in% variable_values) {
+        return(value)
+      }
+
+      suffix_matches <- variable_values[endsWith(variable_values, paste0("-", value))]
+      if (length(suffix_matches) == 1) {
+        return(suffix_matches)
+      }
+
+      value
+    })
+  })
+
+  names(normalized) <- purrr::map_chr(names(query), function(variable_name) {
+    variable_index <- match(variable_name, variable_codes)
+    if (is.na(variable_index)) {
+      variable_index <- match(variable_name, variable_texts)
+    }
+
+    if (is.na(variable_index)) {
+      variable_name
+    } else {
+      variable_codes[[variable_index]]
+    }
+  })
+
+  normalized
+}

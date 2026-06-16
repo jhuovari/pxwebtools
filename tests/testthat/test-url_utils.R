@@ -12,6 +12,15 @@ test_that("url_web2api removes first prefix and converts other underscores", {
 
   expect_equal(
     url_web2api(web_url_statfin),
-    "https://pxdata.stat.fi/PxWeb/api/v1/fi/StatFin/ati/statfin_ati_pxt_11zt.px"
+    "https://pxdata.stat.fi/PxWeb/api/v1/fi/StatFin/ati/11zt.px"
+  )
+})
+
+test_that("url_web2api shortens active StatFin table filenames", {
+  web_url_statfin <- "https://pxdata.stat.fi/PxWeb/pxweb/fi/StatFin/StatFin__ton/statfin_ton_pxt_111e.px"
+
+  expect_equal(
+    url_web2api(web_url_statfin),
+    "https://pxdata.stat.fi/PxWeb/api/v1/fi/StatFin/ton/111e.px"
   )
 })
