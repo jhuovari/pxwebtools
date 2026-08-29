@@ -27,7 +27,8 @@ A modified data frame where time-related columns are merged into a single
 This function processes and converts multiple time-related columns (e.g., year, month, day)
 into a single \code{Date} column. If no \code{date_format} is specified, the format is
 inferred from the PxWeb time variable code (see Details) and, failing that,
-\code{statfitools::clean_times2()} is used to parse statfin dates.
+the statfin style time variables are parsed by the frequency of
+their values.
 }
 \details{
 Since the Statistics Finland PxWeb database change of 8 June 2026 the time
@@ -36,7 +37,7 @@ frequency of the table: \code{timeperiod_y} for yearly, \code{timeperiod_q} for
 quarterly and \code{timeperiod_m} for monthly tables. When \code{date_format} is
 \code{NULL} these columns are recognised and parsed. Tables that still use the
 old time variable names (\code{Vuosi}, \code{Vuosineljannes}, \code{Kuukausi}) are parsed
-with \code{statfitools::clean_times2()} as before.
+as before.
 }
 \examples{
 df <- data.frame(

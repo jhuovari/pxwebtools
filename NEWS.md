@@ -24,6 +24,15 @@ replaced the variable name as the identifier used in API queries.
 * Tests run the package against recorded API responses of the current API, and
   tests against the live API are skipped when it is not reachable.
 
+Dependencies
+
+* The package no longer depends on statfitools, and has no `Remotes`, so it
+  installs from CRAN packages only. The five helper functions the package used
+  from statfitools (`make_names`, `clean_names`, `codes2names`,
+  `px_code_name` and `clean_times2`) are now internal functions of pxwebtools.
+  They are not exported, so nothing is masked when statfitools is also
+  attached, and the output of `pxw_get_data` is unchanged.
+
 # pxwebtools 0.1.5
 
 * `pxw_codes_names_table` to Retrieve Variable Codes and Labels from Attributes of Data

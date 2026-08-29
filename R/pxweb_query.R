@@ -158,7 +158,7 @@ pxw_time_variables <- function(meta) {
   }
 
   codes <- purrr::map_chr(variables, "code")
-  which(statfitools::make_names(codes) %in% c("vuosi", "vuosineljannes", "kuukausi") |
+  which(pxw_make_names(codes) %in% c("vuosi", "vuosineljannes", "kuukausi") |
           grepl("^timeperiod", codes, ignore.case = TRUE))
 }
 
