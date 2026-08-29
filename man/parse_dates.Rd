@@ -16,7 +16,7 @@ Names should match column names in \code{df}, and values should indicate their f
 \item \code{"m"} for month
 \item \code{"d"} for day
 \item \code{"q"} for quarter. see more from \link[lubridate]{parse_date_time}.
-If \code{NULL}, the function applies \code{statfitools::clean_times2()}.
+If \code{NULL}, the format is inferred from the data.
 }}
 }
 \value{
@@ -25,8 +25,18 @@ A modified data frame where time-related columns are merged into a single
 }
 \description{
 This function processes and converts multiple time-related columns (e.g., year, month, day)
-into a single \code{Date} column. If no \code{date_format} is specified, it defaults to
-\code{statfitools::clean_times2()} which automatically parses statfin dates.
+into a single \code{Date} column. If no \code{date_format} is specified, the format is
+inferred from the PxWeb time variable code (see Details) and, failing that,
+\code{statfitools::clean_times2()} is used to parse statfin dates.
+}
+\details{
+Since the Statistics Finland PxWeb database change of 8 June 2026 the time
+variable of a table is identified by a variable code that follows the
+frequency of the table: \code{timeperiod_y} for yearly, \code{timeperiod_q} for
+quarterly and \code{timeperiod_m} for monthly tables. When \code{date_format} is
+\code{NULL} these columns are recognised and parsed. Tables that still use the
+old time variable names (\code{Vuosi}, \code{Vuosineljannes}, \code{Kuukausi}) are parsed
+with \code{statfitools::clean_times2()} as before.
 }
 \examples{
 df <- data.frame(
@@ -39,10 +49,17 @@ date_format <- c(Vuosi = "y", kuukausi = "m")
 
 parse_dates(df, date_format)
 
-# Using the default cleaning function for statfi-style date
+# Time variable code of a monthly table in the current StatFin API
 df2 <- data.frame(
-  Kuukausi = c("2020M01", "2020M02", "2020M03"),
+  timeperiod_m = c("2020M01", "2020M02", "2020M03"),
   values = c(100, 200, 300)
 )
 parse_dates(df2, NULL)
+
+# Using the default cleaning function for an old style statfi date
+df3 <- data.frame(
+  Kuukausi = c("2020M01", "2020M02", "2020M03"),
+  values = c(100, 200, 300)
+)
+parse_dates(df3, NULL)
 }

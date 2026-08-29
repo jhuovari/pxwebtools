@@ -1,0 +1,31 @@
+{
+  "title": "Kansantalouden neljännesvuositilinpito muuttujina Vuosineljännes ja Tiedot",
+  "variables": [
+    {
+      "code": "timeperiod_q",
+      "text": "Vuosineljännes",
+      "values": [
+        "2026Q1",
+        "2026Q2"
+      ],
+      "valueTexts": [
+        "2026Q1",
+        "2026Q2"
+      ],
+      "elimination": false,
+      "time": true
+    },
+    {
+      "code": "contentscode",
+      "text": "Tiedot",
+      "values": [
+        "ntp-bkt"
+      ],
+      "valueTexts": [
+        "Bruttokansantuote"
+      ],
+      "elimination": false,
+      "time": false
+    }
+  ]
+}

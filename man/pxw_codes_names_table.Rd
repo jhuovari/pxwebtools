@@ -7,9 +7,9 @@
 pxw_codes_names_table(x, var)
 }
 \arguments{
-\item{x}{A data object (typically returned by \code{pxw_get_data}) that contains a "codes" attribute. This attribute should be a list where each element corresponds to a variable's code-to-label mapping.}
+\item{x}{A data object (typically returned by \code{pxw_get_data}) that contains a "codes_names" attribute. This attribute should be a list where each element corresponds to a variable's code-to-label mapping.}
 
-\item{var}{A character string specifying the variable name (or identifier) for which the code and label table is required. The function will look for this variable within the "codes" attribute of \code{x}.}
+\item{var}{A character string specifying the variable name (or identifier) for which the code and label table is required. The function will look for this variable within the "codes_names" attribute of \code{x}.}
 }
 \value{
 A \code{data.frame} with two columns:
@@ -18,16 +18,24 @@ A \code{data.frame} with two columns:
 }
 \description{
 This function extracts the codes and corresponding labels for a specified variable
-from the metadata attributes of a data object retrieved by \code{pxw_get_data}. The data object is expected to have an attribute named "codes",
+from the metadata attributes of a data object retrieved by \code{pxw_get_data}. The data object is expected to have an attribute named "codes_names",
 which is a list where each element is a named vector. The names of this vector are the actual codes,
 while the vector values are the descriptive labels.
 }
 \details{
-The function works by retrieving the metadata stored in the "codes" attribute of the data object. It then
+The function works by retrieving the metadata stored in the "codes_names" attribute of the data object. It then
 extracts the element corresponding to the provided \code{var}, which should be a named vector where each name is a code and each value is the label.
 The resulting data frame makes it easier to inspect or manipulate the mapping between codes and their human-readable names.
 
-If the specified variable is not found in the "codes" attribute, the function may return \code{NULL} or lead to an error depending on how the data object is structured.
+The variable names follow the variable codes of the PxWeb table. Since the
+Statistics Finland database change of 8 June 2026 the content variable of a
+StatFin table is called \code{contentscode} and the time variable
+\code{timeperiod_y}, \code{timeperiod_q} or \code{timeperiod_m}. The time
+variable is parsed into a \code{time} column by \code{pxw_get_data} and is
+therefore not part of the returned mapping.
+
+The function stops with an error if the specified variable is not found in
+the "codes_names" attribute.
 }
 \examples{
 \dontrun{

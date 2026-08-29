@@ -94,3 +94,45 @@ test_that("parse_dates infers quarterly and yearly timeperiod formats", {
   expect_equal(result_q$time, as.Date(c("1995-01-01", "1995-04-01")))
   expect_equal(result_y$time, as.Date(c("1995-01-01", "1996-01-01")))
 })
+
+test_that("parse_dates keeps an explicit date_format over the inferred one", {
+  data_m <- data.frame(
+    values = c(1, 2),
+    timeperiod_m = c("1995M01", "1995M02")
+  )
+
+  result <- parse_dates(data_m, c(timeperiod_m = "Ym"))
+
+  expect_equal(result$time, as.Date(c("1995-01-01", "1995-02-01")))
+})
+
+test_that("parse_dates moves time first and drops the time column", {
+  data_y <- data.frame(
+    values = c(1, 2),
+    timeperiod_y = c("1995", "1996")
+  )
+
+  result <- parse_dates(data_y)
+
+  expect_equal(names(result), c("time", "values"))
+})
+
+test_that("parse_dates falls back to clean_times2 for unknown timeperiod codes", {
+  # A frequency without a known format is left to statfitools::clean_times2(),
+  # which parses the value itself.
+  data_m <- data.frame(
+    values = c(1, 2),
+    timeperiod = c("1995M01", "1995M02")
+  )
+
+  result <- parse_dates(data_m)
+
+  expect_equal(result$time, as.Date(c("1995-01-01", "1995-02-01")))
+})
+
+test_that("pxw_infer_date_format only recognises timeperiod columns", {
+  expect_null(pxw_infer_date_format(data.frame(Vuosi = "1995")))
+  expect_null(pxw_infer_date_format(data.frame(timeperiod_w = "1995W01")))
+  expect_equal(pxw_infer_date_format(data.frame(timeperiod_q = "1995Q1")),
+               c(timeperiod_q = "Yq"))
+})

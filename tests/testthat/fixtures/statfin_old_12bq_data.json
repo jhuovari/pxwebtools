@@ -1,0 +1,83 @@
+{
+  "columns": [
+    {
+      "code": "Vuosi",
+      "text": "Vuosi",
+      "type": "d"
+    },
+    {
+      "code": "Sukupuoli",
+      "text": "Sukupuoli",
+      "type": "d"
+    },
+    {
+      "code": "vaesto",
+      "text": "Väestö",
+      "type": "c"
+    }
+  ],
+  "comments": [],
+  "data": [
+    {
+      "key": [
+        "1970",
+        "SSS"
+      ],
+      "values": [
+        "1000"
+      ]
+    },
+    {
+      "key": [
+        "1970",
+        "1"
+      ],
+      "values": [
+        "1001"
+      ]
+    },
+    {
+      "key": [
+        "1970",
+        "2"
+      ],
+      "values": [
+        "1002"
+      ]
+    },
+    {
+      "key": [
+        "1975",
+        "SSS"
+      ],
+      "values": [
+        "1003"
+      ]
+    },
+    {
+      "key": [
+        "1975",
+        "1"
+      ],
+      "values": [
+        "1004"
+      ]
+    },
+    {
+      "key": [
+        "1975",
+        "2"
+      ],
+      "values": [
+        "1005"
+      ]
+    }
+  ],
+  "metadata": [
+    {
+      "infofile": "vkour",
+      "updated": "2026-05-02T06:00:00Z",
+      "label": "Fixture table"
+    }
+  ]
+}

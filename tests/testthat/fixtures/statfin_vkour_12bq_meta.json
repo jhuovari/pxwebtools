@@ -1,0 +1,61 @@
+{
+  "title": "Väestö muuttujina Vuosi, Alue, Sukupuoli ja Tiedot",
+  "variables": [
+    {
+      "code": "timeperiod_y",
+      "text": "Vuosi",
+      "values": [
+        "1970",
+        "1975"
+      ],
+      "valueTexts": [
+        "1970",
+        "1975"
+      ],
+      "elimination": false,
+      "time": true
+    },
+    {
+      "code": "kunta_1_20260101",
+      "text": "Alue",
+      "values": [
+        "SSS",
+        "091"
+      ],
+      "valueTexts": [
+        "KOKO MAA",
+        "Helsinki"
+      ],
+      "elimination": false,
+      "time": false
+    },
+    {
+      "code": "sukupuoli",
+      "text": "Sukupuoli",
+      "values": [
+        "SSS",
+        "1",
+        "2"
+      ],
+      "valueTexts": [
+        "Yhteensä",
+        "Miehet",
+        "Naiset"
+      ],
+      "elimination": false,
+      "time": false
+    },
+    {
+      "code": "contentscode",
+      "text": "Tiedot",
+      "values": [
+        "vaesto"
+      ],
+      "valueTexts": [
+        "Väestö"
+      ],
+      "elimination": false,
+      "time": false
+    }
+  ]
+}

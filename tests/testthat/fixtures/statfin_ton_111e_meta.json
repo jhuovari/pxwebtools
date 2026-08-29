@@ -1,0 +1,47 @@
+{
+  "title": "Tieliikenneonnettomuudet muuttujina Kuukausi, Osallinen ja Tiedot",
+  "variables": [
+    {
+      "code": "timeperiod_m",
+      "text": "Kuukausi",
+      "values": [
+        "2026M01",
+        "2026M02"
+      ],
+      "valueTexts": [
+        "2026M01",
+        "2026M02"
+      ],
+      "elimination": false,
+      "time": true
+    },
+    {
+      "code": "osallinen",
+      "text": "Osallinen",
+      "values": [
+        "SSS",
+        "1"
+      ],
+      "valueTexts": [
+        "Yhteensä",
+        "Henkilöauto"
+      ],
+      "elimination": false,
+      "time": false
+    },
+    {
+      "code": "contentscode",
+      "text": "Tiedot",
+      "values": [
+        "ton-kuol",
+        "ton-loukv"
+      ],
+      "valueTexts": [
+        "Kuolleet",
+        "Loukkaantuneet"
+      ],
+      "elimination": false,
+      "time": false
+    }
+  ]
+}

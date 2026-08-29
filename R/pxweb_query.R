@@ -7,19 +7,30 @@
 #'
 #' @export
 #' @examples
-#' pxw_print_full_query(url = "https://pxdata.stat.fi/PxWeb/api/v1/fi/StatFin/ati/statfin_ati_pxt_11zt.px")
-#' pxw_print_full_query(url = "https://pxdata.stat.fi/PxWeb/api/v1/fi/StatFin/tyokay/statfin_tyokay_pxt_115u.px")
+#' \dontrun{
+#' pxw_print_full_query(url = "https://pxdata.stat.fi/PxWeb/api/v1/fi/StatFin/ati/11zt.px")
+#' pxw_print_full_query(url = "https://pxdata.stat.fi/PxWeb/api/v1/fi/StatFin/tyokay/115u.px")
+#' }
 pxw_print_full_query <- function(url, time_all = TRUE) {
   # Prepare the full query
   full_query <- pxw_prepare_full_query(url, time_all)
 
-  # Print the query as R code
-  cat(pxweb:::pxweb_query_as_rcode(full_query), sep = "\n")
+  # pxweb_query_as_rcode() prints as a side effect, capture it and print once.
+  utils::capture.output({
+    query_text <- pxweb:::pxweb_query_as_rcode(full_query)
+  })
+
+  cat(query_text, sep = "\n")
 }
 
 #' Print code to download data from a table URL
 #'
 #' This function generates R code to download a `data.frame` from a PxWeb API using a specified query.
+#'
+#' The printed query uses the variable codes and value codes of the table
+#' metadata, so the generated code is always in the form the API expects. This
+#' is the most reliable way to find out the variable codes that Statistics
+#' Finland introduced in the 8 June 2026 database change.
 #'
 #' @param url A PxWeb API URL to the table or a web interface URL.
 #' @param time_all If TRUE (default), the time variable is set to \code{c("*")}.
@@ -27,13 +38,17 @@ pxw_print_full_query <- function(url, time_all = TRUE) {
 #'
 #' @export
 #' @examples
-#' pxw_print_code_full_query(url = "https://pxdata.stat.fi/PxWeb/pxweb/fi/StatFin/StatFin__ati/statfin_ati_pxt_14sk.px")
+#' \dontrun{
+#' pxw_print_code_full_query(
+#'   url = "https://pxdata.stat.fi/PxWeb/pxweb/fi/StatFin/StatFin__ati/14sk.px"
+#' )
+#' }
 pxw_print_code_full_query <- function(url, time_all = TRUE, target = "") {
   # Convert web URL to API URL if needed
-  if (!grepl("api", url)) {
+  if (!pxw_is_api_url(url)) {
     url <- url_web2api(url)  # Use url_web2api from pxwebtools
   }
-  url <- pxw_normalize_statfin_api_url(url)
+  url <- pxw_normalize_url(url)
 
   # Prepare the full query
   full_query <- pxw_prepare_full_query(url = url, time_all = time_all)
@@ -76,8 +91,8 @@ pxw_print_code_full_query_c <- function(url, time_all = TRUE, target = "clipboar
 #' @export
 pxw_prepare_full_query <- function(url, time_all = TRUE) {
   # Fetch metadata from the PxWeb API
-  url <- pxw_normalize_statfin_api_url(url)
-  meta <- pxweb::pxweb_get(url)
+  url <- pxw_normalize_url(url)
+  meta <- pxw_pxweb_get(url)
 
   # Create query with all variables set to "*"
   codes <- sapply(meta$variables, "[[", "code")
@@ -90,10 +105,12 @@ pxw_prepare_full_query <- function(url, time_all = TRUE) {
 
   # Adjust time variable if needed
   if (time_all) {
-    time_position <- stats::na.omit(match(c("vuosi", "vuosineljannes", "kuukausi"),
-                                     statfitools::make_names(purrr::map_chr(full_query$query, ~ .x$code))))
-    if (length(time_position) > 0) {
-      full_query$query[[time_position]]$selection$values <- "*"
+    time_codes <- codes[pxw_time_variables(meta)]
+    query_codes <- purrr::map_chr(full_query$query, ~ .x$code)
+    time_position <- stats::na.omit(match(time_codes, query_codes))
+    for (i in time_position) {
+      full_query$query[[i]]$selection$values <- "*"
+      full_query$query[[i]]$selection$filter <- "all"
     }
   }
   full_query
@@ -110,12 +127,39 @@ pxw_prepare_full_query <- function(url, time_all = TRUE) {
 #' @export
 pxw_full_query_as_list <- function(url, time_all = TRUE) {
   # Convert web URL to API URL if needed
-  url <- url_web2api(url)
-  url <- pxw_normalize_statfin_api_url(url)
+  if (!pxw_is_api_url(url)) {
+    url <- url_web2api(url)
+  }
+  url <- pxw_normalize_url(url)
 
   # Prepare the query and evaluate it as an R object
-  full_query_r_expr <- pxweb:::pxweb_query_as_rcode(pxw_prepare_full_query(url, time_all = time_all))
+  utils::capture.output({
+    full_query_r_expr <- pxweb:::pxweb_query_as_rcode(
+      pxw_prepare_full_query(url, time_all = time_all))
+  })
   eval(parse(text = paste0(full_query_r_expr[-1], collapse = "\n")))
+}
+
+
+# Positions of the time variables in PxWeb metadata.
+#
+# PxWeb metadata flags the time variable with `time = TRUE`. Statistics
+# Finland's variable codes for time variables follow the frequency of the
+# table (timeperiod_y, timeperiod_q, timeperiod_m) since the 8 June 2026
+# database change, and were the variable names (Vuosi, Vuosineljannes,
+# Kuukausi) before it. Both are recognised when the metadata does not flag the
+# time variable.
+pxw_time_variables <- function(meta) {
+  variables <- meta$variables
+  is_time <- purrr::map_lgl(variables, ~ isTRUE(.x$time))
+
+  if (any(is_time)) {
+    return(which(is_time))
+  }
+
+  codes <- purrr::map_chr(variables, "code")
+  which(statfitools::make_names(codes) %in% c("vuosi", "vuosineljannes", "kuukausi") |
+          grepl("^timeperiod", codes, ignore.case = TRUE))
 }
 
 

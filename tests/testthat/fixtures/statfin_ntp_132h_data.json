@@ -1,0 +1,40 @@
+{
+  "columns": [
+    {
+      "code": "timeperiod_q",
+      "text": "Vuosineljännes",
+      "type": "t"
+    },
+    {
+      "code": "ntp-bkt",
+      "text": "Bruttokansantuote",
+      "type": "c"
+    }
+  ],
+  "comments": [],
+  "data": [
+    {
+      "key": [
+        "2026Q1"
+      ],
+      "values": [
+        "60000"
+      ]
+    },
+    {
+      "key": [
+        "2026Q2"
+      ],
+      "values": [
+        "60001"
+      ]
+    }
+  ],
+  "metadata": [
+    {
+      "infofile": "ntp",
+      "updated": "2026-08-28T06:00:00Z",
+      "label": "Fixture table"
+    }
+  ]
+}

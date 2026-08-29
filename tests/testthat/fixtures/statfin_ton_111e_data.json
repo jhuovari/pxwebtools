@@ -1,0 +1,74 @@
+{
+  "columns": [
+    {
+      "code": "timeperiod_m",
+      "text": "Kuukausi",
+      "type": "t"
+    },
+    {
+      "code": "osallinen",
+      "text": "Osallinen",
+      "type": "d"
+    },
+    {
+      "code": "ton-kuol",
+      "text": "Kuolleet",
+      "type": "c"
+    },
+    {
+      "code": "ton-loukv",
+      "text": "Loukkaantuneet",
+      "type": "c"
+    }
+  ],
+  "comments": [],
+  "data": [
+    {
+      "key": [
+        "2026M01",
+        "SSS"
+      ],
+      "values": [
+        "10",
+        "11"
+      ]
+    },
+    {
+      "key": [
+        "2026M01",
+        "1"
+      ],
+      "values": [
+        "12",
+        "13"
+      ]
+    },
+    {
+      "key": [
+        "2026M02",
+        "SSS"
+      ],
+      "values": [
+        "14",
+        "15"
+      ]
+    },
+    {
+      "key": [
+        "2026M02",
+        "1"
+      ],
+      "values": [
+        "16",
+        "17"
+      ]
+    }
+  ],
+  "metadata": [
+    {
+      "infofile": "ton",
+      "updated": "2026-08-14T06:00:00Z",
+      "label": "Fixture table"
+    }
+  ]
+}

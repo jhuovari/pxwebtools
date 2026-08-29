@@ -20,6 +20,13 @@ This function converts a PxWeb web interface URL, which includes a language comp
 to an API URL for programmatic access. The first redundant prefix (e.g., "LUKE__")
 is removed, while subsequent double underscores (\verb{__}) are replaced with slashes (\code{/}).
 }
+\details{
+Any web interface path after the table file (for example
+\verb{/table/tableViewLayout1/}) is dropped, so URLs can be copied directly from
+the browser address bar. For Statistics Finland's StatFin database the table
+file name is also shortened to the form used since the 8 June 2026 database
+change, see \code{\link[=pxw_normalize_url]{pxw_normalize_url()}}.
+}
 \examples{
 
 url_web2api("https://vero2.stat.fi/PXWeb/pxweb/fi/Vero/Vero__Tulorekisteri/trt_010.px/")
@@ -28,6 +35,6 @@ url_web2api("https://vero2.stat.fi/PXWeb/pxweb/fi/Vero/Vero__Tulorekisteri/trt_0
 url_web2api("https://statdb.luke.fi/PxWeb/pxweb/fi/LUKE/LUKE__04\%20Metsa__02\%20Rakenne\%20ja\%20tuotanto__06\%20Puun\%20markkinahakkuut__04\%20Vuositilastot/01a_Teollisuuspuun_hakkuut_maak_v.px/")
 # Output: "https://statdb.luke.fi/PxWeb/api/v1/fi/LUKE/04\%20Metsa/02\%20Rakenne\%20ja\%20tuotanto/06\%20Puun\%20markkinahakkuut/04\%20Vuositilastot/01a_Teollisuuspuun_hakkuut_maak_v.px"
 
-url_web2api("https://pxdata.stat.fi/PxWeb/pxweb/fi/StatFin/StatFin__ati/statfin_ati_pxt_11zt.px")
-# Output: "https://pxdata.stat.fi/PxWeb/api/v1/fi/StatFin/ati/statfin_ati_pxt_11zt.px"
+url_web2api("https://pxdata.stat.fi/PxWeb/pxweb/fi/StatFin/StatFin__ati/11zt.px")
+# Output: "https://pxdata.stat.fi/PxWeb/api/v1/fi/StatFin/ati/11zt.px"
 }
