@@ -65,3 +65,32 @@ test_that("parse_dates stops if columns in date_format are missing", {
   expect_error(parse_dates(data_y, date_format),
                "Some date_format names are not present in the data frame.")
 })
+
+test_that("parse_dates infers monthly timeperiod_m format", {
+  data_m <- data.frame(
+    values = c(1, 2),
+    timeperiod_m = c("1995M01", "1995M02")
+  )
+
+  result <- parse_dates(data_m)
+
+  expect_true("time" %in% colnames(result))
+  expect_equal(result$time, as.Date(c("1995-01-01", "1995-02-01")))
+})
+
+test_that("parse_dates infers quarterly and yearly timeperiod formats", {
+  data_q <- data.frame(
+    values = c(1, 2),
+    timeperiod_q = c("1995Q1", "1995Q2")
+  )
+  data_y <- data.frame(
+    values = c(1, 2),
+    timeperiod_y = c("1995", "1996")
+  )
+
+  result_q <- parse_dates(data_q)
+  result_y <- parse_dates(data_y)
+
+  expect_equal(result_q$time, as.Date(c("1995-01-01", "1995-04-01")))
+  expect_equal(result_y$time, as.Date(c("1995-01-01", "1996-01-01")))
+})

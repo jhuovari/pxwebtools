@@ -33,6 +33,7 @@ pxw_print_code_full_query <- function(url, time_all = TRUE, target = "") {
   if (!grepl("api", url)) {
     url <- url_web2api(url)  # Use url_web2api from pxwebtools
   }
+  url <- pxw_normalize_statfin_api_url(url)
 
   # Prepare the full query
   full_query <- pxw_prepare_full_query(url = url, time_all = time_all)
@@ -75,6 +76,7 @@ pxw_print_code_full_query_c <- function(url, time_all = TRUE, target = "clipboar
 #' @export
 pxw_prepare_full_query <- function(url, time_all = TRUE) {
   # Fetch metadata from the PxWeb API
+  url <- pxw_normalize_statfin_api_url(url)
   meta <- pxweb::pxweb_get(url)
 
   # Create query with all variables set to "*"
@@ -109,6 +111,7 @@ pxw_prepare_full_query <- function(url, time_all = TRUE) {
 pxw_full_query_as_list <- function(url, time_all = TRUE) {
   # Convert web URL to API URL if needed
   url <- url_web2api(url)
+  url <- pxw_normalize_statfin_api_url(url)
 
   # Prepare the query and evaluate it as an R object
   full_query_r_expr <- pxweb:::pxweb_query_as_rcode(pxw_prepare_full_query(url, time_all = time_all))

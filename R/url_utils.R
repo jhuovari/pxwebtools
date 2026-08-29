@@ -39,8 +39,24 @@ url_web2api <- function(web_url, language = NULL) {
   # Convert all remaining "__" to "/"
   api_url <- gsub("__", "/", api_url, fixed = TRUE)
 
+  # Apply Statistics Finland's 2026 StatFin table filename shortening.
+  api_url <- pxw_normalize_statfin_api_url(api_url)
+
   # Ensure the .px extension and path format remain intact
   return(api_url)
+}
+
+# Normalize Statistics Finland StatFin API URLs after the 2026 table ID change.
+#
+# Active StatFin table files changed from names such as
+# statfin_ton_pxt_111e.px to the short table ID form 111e.px.
+pxw_normalize_statfin_api_url <- function(url) {
+  sub(
+    "(/StatFin/([^/]+)/)statfin_\\2_pxt_([A-Za-z0-9]+\\.px)(/?)$",
+    "\\1\\3\\4",
+    url,
+    ignore.case = TRUE
+  )
 }
 
 # Helper function: Fallback for NULL values

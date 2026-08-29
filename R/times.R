@@ -37,7 +37,13 @@
 #' parse_dates(df2, NULL)
 parse_dates <- function(df, date_format = NULL) {
 
-  if (is.null(date_format)) return(statfitools::clean_times2(df))
+  if (is.null(date_format)) {
+    date_format <- pxw_infer_date_format(df)
+
+    if (is.null(date_format)) {
+      return(statfitools::clean_times2(df))
+    }
+  }
 
   # Ensure date_format is named correctly
   if (!all(names(date_format) %in% names(df))) {
@@ -62,3 +68,21 @@ parse_dates <- function(df, date_format = NULL) {
 }
 
 utils::globalVariables(c("time_combined"))
+
+
+# Infer date formats for the new Statistics Finland VARIABLECODE time columns.
+pxw_infer_date_format <- function(df) {
+  timeperiod_formats <- c(
+    timeperiod_m = "Ym",
+    timeperiod_q = "Yq",
+    timeperiod_y = "y"
+  )
+
+  matched_timeperiod <- intersect(names(timeperiod_formats), names(df))
+
+  if (length(matched_timeperiod) == 0) {
+    return(NULL)
+  }
+
+  timeperiod_formats[matched_timeperiod[[1]]]
+}
