@@ -19,11 +19,21 @@ pxw_print_code_full_query_c(url, time_all = TRUE, target = "clipboard-128")
 \description{
 This function generates R code to download a \code{data.frame} from a PxWeb API using a specified query.
 }
+\details{
+The printed query uses the variable codes and value codes of the table
+metadata, so the generated code is always in the form the API expects. This
+is the most reliable way to find out the variable codes that Statistics
+Finland introduced in the 8 June 2026 database change.
+}
 \section{Functions}{
 \itemize{
 \item \code{pxw_print_code_full_query_c()}: Print to clipboard
 
 }}
 \examples{
-pxw_print_code_full_query(url = "https://pxdata.stat.fi/PxWeb/pxweb/fi/StatFin/StatFin__ati/statfin_ati_pxt_14sk.px")
+\dontrun{
+pxw_print_code_full_query(
+  url = "https://pxdata.stat.fi/PxWeb/pxweb/fi/StatFin/StatFin__ati/14sk.px"
+)
+}
 }

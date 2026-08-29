@@ -15,6 +15,8 @@ pxw_print_full_query(url, time_all = TRUE)
 This function prints the full PxWeb query structure for a given URL.
 }
 \examples{
-pxw_print_full_query(url = "https://pxdata.stat.fi/PxWeb/api/v1/fi/StatFin/ati/statfin_ati_pxt_11zt.px")
-pxw_print_full_query(url = "https://pxdata.stat.fi/PxWeb/api/v1/fi/StatFin/tyokay/statfin_tyokay_pxt_115u.px")
+\dontrun{
+pxw_print_full_query(url = "https://pxdata.stat.fi/PxWeb/api/v1/fi/StatFin/ati/11zt.px")
+pxw_print_full_query(url = "https://pxdata.stat.fi/PxWeb/api/v1/fi/StatFin/tyokay/115u.px")
+}
 }

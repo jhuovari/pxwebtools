@@ -28,8 +28,8 @@ pxw_get_data(
 \item{date_format}{A time format for \link{parse_dates}.
 See also \link[lubridate]{parse_date_time}.}
 
-\item{print_updated}{Whether to print update time when not in interactive
-session. FALSE (defaut) gives message instead.}
+\item{print_update}{Whether to print update time when not in interactive
+session. FALSE (default) gives message instead.}
 }
 \description{
 Downloads data from a PxWeb API, processes it into a tidy format,
@@ -38,20 +38,39 @@ and optionally modifies the output with variable renaming and name columns.
 \details{
 This function fetches data from a PxWeb API, processes it into a long-format
 \code{data.frame}, rename time columns to \code{time} as Date-format with
-\link[statfitools]{clean_times2} and rename all
+\link{parse_dates} and rename all
 columns with \link[statfitools]{clean_names},
 and applies optional transformation adding name columns for codes. The resulting data frame also includes
 additional attributes such as \code{codes_names} for mapping codes to names.
 }
+\section{Statistics Finland API change of 8 June 2026}{
+
+Statistics Finland shortened the table file names of its active PxWeb
+databases and gave every variable a variable code that replaced the variable
+name as the identifier used in API queries. The content variable is now
+\code{contentscode}, the time variable \code{timeperiod_y}, \code{timeperiod_q} or
+\code{timeperiod_m} depending on the frequency of the table, and classification
+variables use the identifier of the classification code list. Some value
+codes of classification variables also got a prefix.
+
+\code{pxw_get_data} keeps queries written before the change working: the URL is
+shortened to the current form, query variables given by their old name are
+matched to the corresponding variable code and value codes are matched to
+prefixed value codes of the table. Use \code{\link[=pxw_print_code_full_query_c]{pxw_print_code_full_query_c()}} to
+print a query template with the current codes.
+}
+
 \examples{
-url <- "https://statfin.stat.fi/PXWeb/api/v1/fi/StatFin/vkour/statfin_vkour_pxt_12bq.px"
-query <- list("Vuosi" = c("1970", "1975"),
-              "Alue" = c("SSS"),
-              "Ikä" = c("SSS", "15-19"),
-              "Sukupuoli" = c("SSS", "1", "2"),
-              "Koulutusaste" = c("SSS", "3T8"),
-              "Tiedot" = c("vaesto"))
+\dontrun{
+url <- "https://statfin.stat.fi/PXWeb/api/v1/fi/StatFin/vkour/12bq.px"
+query <- list("timeperiod_y" = c("1970", "1975"),
+              "alue" = c("SSS"),
+              "ika" = c("SSS", "15-19"),
+              "sukupuoli" = c("SSS", "1", "2"),
+              "koulutusaste" = c("SSS", "3T8"),
+              "contentscode" = c("vaesto"))
 
 data <- pxw_get_data(url, query)
 data_named <- pxw_get_data(url, query, to_name = TRUE)
+}
 }
