@@ -8,6 +8,10 @@
 # be developed together with the rest of the package.
 #
 # The functions are not exported. Use statfitools when you need them directly.
+#
+# statfitools is licensed under GPL-3 and pxwebtools under MIT. The functions
+# below are the work of Janne Huovari, the author of both packages, and are
+# licensed here under the MIT license of pxwebtools by their author.
 
 
 # Make syntactically valid names.
