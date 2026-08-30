@@ -37,9 +37,8 @@ and optionally modifies the output with variable renaming and name columns.
 }
 \details{
 This function fetches data from a PxWeb API, processes it into a long-format
-\code{data.frame}, rename time columns to \code{time} as Date-format with
-\link{parse_dates} and rename all
-columns with \link[statfitools]{clean_names},
+\code{data.frame}, renames the time columns to \code{time} as Date-format with
+\link{parse_dates}, renames all columns to syntactically valid names,
 and applies optional transformation adding name columns for codes. The resulting data frame also includes
 additional attributes such as \code{codes_names} for mapping codes to names.
 }

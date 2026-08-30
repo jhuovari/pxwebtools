@@ -18,7 +18,6 @@ Imports:
     purrr,
     forcats,
     tidyr,
-    statfitools,
     lubridate,
     stats,
     utils
@@ -27,8 +26,6 @@ Suggests:
     jsonlite,
     knitr,
     rmarkdown
-Remotes:
-    github::pttry/statfitools
 Roxygen: list(markdown = TRUE)
 URL: https://github.com/jhuovari/pxwebtools
 BugReports: https://github.com/jhuovari/pxwebtools/issues
