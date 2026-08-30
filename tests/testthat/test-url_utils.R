@@ -1,4 +1,6 @@
 test_that("url_web2api handles multiple underscores correctly", {
+  # A database with a multi-level path. Only string handling is tested, the
+  # server is never contacted.
   web_url <- "https://statdb.luke.fi/PxWeb/pxweb/fi/LUKE/LUKE__04%20Metsa__02%20Rakenne%20ja%20tuotanto__06%20Puun%20markkinahakkuut__04%20Vuositilastot/01a_Teollisuuspuun_hakkuut_maak_v.px/"
 
   expect_equal(

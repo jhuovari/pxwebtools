@@ -184,11 +184,11 @@ api_url <- url_web2api(web_url)
 cat(api_url)
 # Output: "https://pxdata.stat.fi/PxWeb/api/v1/fi/StatFin/ton/111e.px/"
 
-# Example 3: LUKE database
-web_url <- "https://statdb.luke.fi/PxWeb/pxweb/fi/LUKE/LUKE__04%20Metsa__02%20Rakenne%20ja%20tuotanto__06%20Puun%20markkinahakkuut__04%20Vuositilastot/01a_Teollisuuspuun_hakkuut_maak_v.px/"
+# Example 3: another PxWeb database, on another server
+web_url <- "https://vero2.stat.fi/PXWeb/pxweb/fi/Vero/Vero__Tulorekisteri/trt_010.px/"
 api_url <- url_web2api(web_url)
 cat(api_url)
-# Output: "https://statdb.luke.fi/PxWeb/api/v1/fi/LUKE/04%20Metsa/02%20Rakenne%20ja%20tuotanto/06%20Puun%20markkinahakkuut/04%20Vuositilastot/01a_Teollisuuspuun_hakkuut_maak_v.px/"
+# Output: "https://vero2.stat.fi/PxWeb/api/v1/fi/Vero/Tulorekisteri/trt_010.px/"
 ```
 
 ## Tests

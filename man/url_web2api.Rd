@@ -17,7 +17,7 @@ A string with the corresponding API URL.
 }
 \description{
 This function converts a PxWeb web interface URL, which includes a language component,
-to an API URL for programmatic access. The first redundant prefix (e.g., "LUKE__")
+to an API URL for programmatic access. The first redundant prefix (e.g., "StatFin__")
 is removed, while subsequent double underscores (\verb{__}) are replaced with slashes (\code{/}).
 }
 \details{
@@ -32,9 +32,10 @@ change, see \code{\link[=pxw_normalize_url]{pxw_normalize_url()}}.
 url_web2api("https://vero2.stat.fi/PXWeb/pxweb/fi/Vero/Vero__Tulorekisteri/trt_010.px/")
 # Output: "https://vero2.stat.fi/PxWeb/api/v1/fi/Vero/Tulorekisteri/trt_010.px/"
 
-url_web2api("https://statdb.luke.fi/PxWeb/pxweb/fi/LUKE/LUKE__04\%20Metsa__02\%20Rakenne\%20ja\%20tuotanto__06\%20Puun\%20markkinahakkuut__04\%20Vuositilastot/01a_Teollisuuspuun_hakkuut_maak_v.px/")
-# Output: "https://statdb.luke.fi/PxWeb/api/v1/fi/LUKE/04\%20Metsa/02\%20Rakenne\%20ja\%20tuotanto/06\%20Puun\%20markkinahakkuut/04\%20Vuositilastot/01a_Teollisuuspuun_hakkuut_maak_v.px/"
-
 url_web2api("https://pxdata.stat.fi/PxWeb/pxweb/fi/StatFin/StatFin__ati/11zt.px")
 # Output: "https://pxdata.stat.fi/PxWeb/api/v1/fi/StatFin/ati/11zt.px"
+
+# The view path the web interface adds to the address bar is dropped
+url_web2api("https://pxdata.stat.fi/PxWeb/pxweb/fi/StatFin/StatFin__ton/111e.px/table/tableViewLayout1/")
+# Output: "https://pxdata.stat.fi/PxWeb/api/v1/fi/StatFin/ton/111e.px/"
 }
