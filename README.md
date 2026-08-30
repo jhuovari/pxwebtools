@@ -84,6 +84,7 @@ a PxWeb web page url to a table or an API url. Code is copied to clipboard.
 library(pxwebtools)
 
 pxw_print_code_full_query_c("https://pxdata.stat.fi/PxWeb/pxweb/en/StatFin/StatFin__tyti/11pk.px/")
+
 ```
 
 The printed code is a complete `pxw_get_data` call, with the variable codes and
@@ -93,27 +94,30 @@ time variable and the classification variables are named by their variable
 codes:
 
 ```r
+
 dat_11pk_px <- pxw_get_data(
   url = "https://pxdata.stat.fi/PxWeb/api/v1/en/StatFin/tyti/11pk.px/",
   query = 
     list("timeperiod_y"=c("*"),
-       "<code of the sex classification>"=c("SSS","1","2"),
+       "sukupuoli_9_20180101"=c("SSS","1","2"),
        "contentscode"=c(
           "Palkansaajat_yht",
           "Jva_kokoaikatyo",
           "Kokoaikatyo_yht"
           )))
+          
 ```
 
 The template can be pasted and modified, for example by dropping the values
 that are not needed:
 
 ```r
+
 dat_11pk_px <- pxw_get_data(
   url = "https://pxdata.stat.fi/PxWeb/api/v1/en/StatFin/tyti/11pk.px/",
   query = 
     list("timeperiod_y"=c("*"),
-       "<code of the sex classification>"=c("SSS","1","2"),
+       "sukupuoli_9_20180101"=c("SSS"),
        "contentscode"=c(
           "Palkansaajat_yht",
           "Kokoaikatyo_yht"
