@@ -3,7 +3,8 @@
 #' This function processes and converts multiple time-related columns (e.g., year, month, day)
 #' into a single `Date` column. If no `date_format` is specified, the format is
 #' inferred from the PxWeb time variable code (see Details) and, failing that,
-#' `statfitools::clean_times2()` is used to parse statfin dates.
+#' the statfin style time variables are parsed by the frequency of
+#' their values.
 #'
 #' @param df A data frame containing time-related columns.
 #' @param date_format A named vector specifying the format of time-related columns.
@@ -21,7 +22,7 @@
 #' quarterly and `timeperiod_m` for monthly tables. When `date_format` is
 #' `NULL` these columns are recognised and parsed. Tables that still use the
 #' old time variable names (`Vuosi`, `Vuosineljannes`, `Kuukausi`) are parsed
-#' with `statfitools::clean_times2()` as before.
+#' as before.
 #'
 #' @return A modified data frame where time-related columns are merged into a single
 #'   `Date` column (`time`), which is moved to the first position.
@@ -58,7 +59,7 @@ parse_dates <- function(df, date_format = NULL) {
     date_format <- pxw_infer_date_format(df)
 
     if (is.null(date_format)) {
-      return(statfitools::clean_times2(df, time_col = pxw_timeperiod_column(df)))
+      return(pxw_clean_times(df, time_col = pxw_timeperiod_column(df)))
     }
   }
 
@@ -106,7 +107,7 @@ pxw_timeperiod_column <- function(df) {
 
 # Infer date format for the Statistics Finland timeperiod time variable codes.
 # Returns NULL for data without a timeperiod column and for frequencies without
-# a known format, which are left to statfitools::clean_times2().
+# a known format, which are left to pxw_clean_times().
 pxw_infer_date_format <- function(df) {
   timeperiod_column <- pxw_timeperiod_column(df)
 

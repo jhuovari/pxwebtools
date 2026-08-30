@@ -217,4 +217,7 @@ Contributions to `pxwebtools` are welcome! Feel free to:
 
 ## Acknowledgments
 
-- The `pxwebtools` package builds on the `pxweb`, `statfitools` and `pttdatahaku` package and the PxWeb API framework used by various statistical services.
+- The `pxwebtools` package builds on the `pxweb` package and the PxWeb API framework used by various statistical services.
+- The internal helpers for cleaning names and times and for handling code to
+  label mappings come from the [statfitools](https://github.com/pttry/statfitools)
+  package by the same author.

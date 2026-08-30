@@ -4,9 +4,8 @@
 #' and optionally modifies the output with variable renaming and name columns.
 #'
 #' This function fetches data from a PxWeb API, processes it into a long-format
-#' `data.frame`, rename time columns to `time` as Date-format with
-#' \link{parse_dates} and rename all
-#' columns with \link[statfitools]{clean_names},
+#' `data.frame`, renames the time columns to `time` as Date-format with
+#' \link{parse_dates}, renames all columns to syntactically valid names,
 #' and applies optional transformation adding name columns for codes. The resulting data frame also includes
 #' additional attributes such as `codes_names` for mapping codes to names.
 #'
@@ -66,7 +65,7 @@ pxw_get_data <- function(url, query, to_name = FALSE,
   px_data <- pxw_pxweb_get(url = url, query = query)
 
   # Extract variable codes and names
-  codes_names <- statfitools::px_code_name(px_data)
+  codes_names <- pxw_code_name(px_data)
 
 
   # Process the PxWeb data into a tidy data frame
@@ -76,18 +75,18 @@ pxw_get_data <- function(url, query, to_name = FALSE,
                         names_to = setdiff(names(codes_names), names(.)),
                         values_to = "values") %>%
     parse_dates(date_format = date_format) %>%
-    statfitools::codes2names(codes_names, to_name = to_name,
-                             name_suffix = name_suffix,
-                             code_suffix = code_suffix) %>%
+    pxw_codes2names(codes_names, to_name = to_name,
+                    name_suffix = name_suffix,
+                    code_suffix = code_suffix) %>%
     dplyr::mutate(across(where(is.character), ~forcats::as_factor(.x))) %>%
-    statfitools::clean_names() %>%
+    pxw_clean_names() %>%
     dplyr::relocate(time) %>%
     dplyr::relocate(values, .after = last_col()) %>%
     droplevels()
 
   cleaned_names <- unique(gsub(paste0(name_suffix, "|", code_suffix), "", names(px_df)))
 
-  codes_names <- statfitools::clean_names(codes_names)
+  codes_names <- pxw_clean_names(codes_names)
 
   # Only keep names that exist in codes_names
   valid_names <- intersect(cleaned_names, names(codes_names))
